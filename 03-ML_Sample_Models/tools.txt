@@ -1,0 +1,195 @@
+1: SMOTE
+2: Scaling
+2.1: LabelEncoder
+2.2: StandardScaler
+3: Accuracy
+4: OLS Report
+5: Train_Test_Split
+6: ROC Curve
+7: GroupBy
+8: Merging/Joining
+9: Model Samples
+
+============================1. SMOTE Method================================================
+from imblearn.over_sampling import SMOTE
+smt = SMOTE(random_state = 0) 
+X_train, y_train = smt.fit_sample(X_train, y_train)
+
+============================2. Scale DataFrame=============================================
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler, MinMaxScaler
+def scale_df(data,cols):
+    data_scaler = MinMaxScaler(feature_range=(0,1))
+    scaling_cols = cols
+    data_scaled = data[scaling_cols]
+    data_scaled = data_scaler.fit_transform(data_scaled)
+    data_scaled = pd.DataFrame(data_scaled,columns = scaling_cols)
+    data = data.drop(scaling_cols,axis=1)
+    data[scaling_cols] = data_scaled
+    return data
+	
+============================2.1 LabelEncoder==============================================
+from sklearn.preprocessing import LabelEncoder
+le = preprocessing.LabelEncoder()
+item_data['category'] = le.fit_transform(item_data['category'])
+
+============================2.2 StandardScaler============================================
+# Does mean subtraction.
+from sklearn import preprocessing
+X = preprocessing.StandardScaler().fit(X).transform(X.astype(float))
+
+	
+============================3. Accuracy & Confusion Matrix=================================
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+def acc(a,b):
+    print('Accuracy(test Data): ',accuracy_score(a,b))
+    #print('Accuracy(train Data):',accuracy_score(a,b))
+    print('Confusion Matrix: \n',pd.DataFrame(confusion_matrix(a,b)))
+    print('Classification Repost:\n',classification_report(a,b))
+	
+============================4. OLS Summary Report==========================================
+import statsmodels.api as sm
+est = sm.OLS(y, X)
+est2 = est.fit()
+print(est2.summary())
+
+============================5. Train_Test_Split============================================
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.20, random_state=0)
+
+============================6. ROC Curve===================================================
+import sklearn.metrics as metrics
+probs = clf.predict_proba(X_test)
+preds = probs[:,1]
+fpr, tpr, threshold = metrics.roc_curve(y_test, preds)
+roc_auc = metrics.auc(fpr, tpr)
+
+import matplotlib.pyplot as plt
+plt.title('Receiver Operating Characteristic')
+plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
+plt.legend(loc = 'lower right')
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
+plt.ylabel('True Positive Rate')
+plt.xlabel('False Positive Rate')
+plt.show()
+
+===========================7. GroupBy=====================================================
+#Method_1: Recommended
+temp = coup_data.groupby(by = 'item_id').agg({'coupon_id':['count']})
+coup_data3 = pd.DataFrame()
+coup_data3['item_id'] = list(temp.iloc[0:,0].index)
+coup_data3['coup_count'] = list(temp.iloc[0:,0].values)
+coup_data3.tail()
+
+#Method_2: its counting unique coupon counts for each campaign_id.
+t_data.groupby('campaign_id')['coupon_id'].nunique()
+
+===========================8. Merging/Joining Tables======================================
+train_data2 = test_data.merge(cam_data,on='campaign_id',how='inner')
+
+
+
+===========================9. Models Syntax================================================
+1. Logistic_Regression:
+	from sklearn.linear_model import LogisticRegression
+	LR = LogisticRegression(solver='liblinear')
+	LR.fit(X_train,y_train)
+	print('Accuracy:',accuracy_score(y_test,LR.predict(X_test)))
+
+2. XGB_Classifier:
+	import xgboost as xgb
+	xg = xgb.XGBClassifier(random_state=0,n_estimators=68)		#,scale_pos_weight=3.5)#,max_depth=7)
+	xg.fit(X_train,y_train)
+	print('Accuracy:',accuracy_score(y_test,xg.predict(X_test)))
+
+3. Random_Forest_Classifier:
+	from sklearn import ensemble
+	clf=ensemble.RandomForestClassifier(n_estimators=50,random_state=0,max_depth=5)
+	clf.fit(X_train,y_train)
+	print('Accuracy:',accuracy_score(y_test,clf.predict(X_test)))
+	
+	[
+	feature_importance = list(zip(cols,clf.feature_importances_))
+	feature_importance.sort(key=lambda x:x[1], reverse=True)
+	print(feature_importance)
+	]
+	OR
+	[
+	feature_importances = pd.DataFrame(clf.feature_importances_,index = X_train.columns,
+                                    columns=['importance']).sort_values('importance',ascending=False)
+	print(feature_importances)
+	]
+	
+4. Decision_Tree_Classifier:   (low performance for always new data) (better for similar data)
+	from sklearn.tree import DecisionTreeClassifier
+	dt = DecisionTreeClassifier(criterion="entropy",random_state=0)
+	dt.fit(X_train,y_train)
+	print('Accuracy:',accuracy_score(y_test,dt.predict(X_test)))
+
+5. SVM_Model:
+	from sklearn import svm
+	clf = svm.SVC(kernel='rbf')
+	clf.fit(X_train, y_train)
+	print('Accuracy:',accuracy_score(y_test,clf.predict(X_test)))
+
+6. KNN_Classifier:
+	from sklearn.neighbors import KNeighborsClassifier
+	knn = KNeighborsClassifier(n_neighbors = 4).fit(X_train,y_train)
+	print('Accuracy:',accuracy_score(y_test,knn.predict(X_test)))
+
+#Finding_K:
+	Ks = 10
+	mean_acc = np.zeros((Ks-1))
+	std_acc = np.zeros((Ks-1))
+	ConfustionMx = [];
+	for n in range(1,Ks):
+		neigh = KNeighborsClassifier(n_neighbors = n).fit(X_train,y_train)
+		yhat=neigh.predict(X_test)
+		mean_acc[n-1] = metrics.accuracy_score(y_test, yhat)
+		std_acc[n-1]=np.std(yhat==y_test)/np.sqrt(yhat.shape[0])
+		
+	mean_acc
+	
+7. Linear_Regression:
+	from sklearn import linear_model
+	regr = linear_model.LinearRegression()
+	regr.fit (X_train,y_train)
+	print ('Coefficients: ', regr.coef_)
+	print ('Intercept: ',regr.intercept_)
+	print('Accuracy:',accuracy_score(y_test,regr.predict(X_test)))
+	print("Mean absolute error: %.2f" % np.mean(np.absolute(regr.predict(X_test) - y_test)))
+	print("Residual sum of squares (MSE): %.2f" % np.mean((regr.predict(X_test) - y_test) ** 2))
+	print("R2-score: %.2f" % r2_score(regr.predict(X_test) , y_test) )
+	
+8. K_Means_Clustering:
+#Method_1:
+	cluster = KMeans(n_clusters=3,random_state=0)
+	data['cluster'] = cluster.fit_predict(X)
+	y_means = cluster.fit_predict(data)
+	
+	#printing Graph:
+	import matplotlib.pyplot as plt
+	plt.scatter(data.iloc[y_means==0,0],data.iloc[y_means==0,1], s=100, c='red', label='for 0')
+	plt.scatter(data.iloc[y_means==1,0],data.iloc[y_means==1,1], s=100, c='blue',label='for 1')
+	plt.scatter(data.iloc[y_means==2,0],data.iloc[y_means==2,1], s=100, c='green', label='for 2')
+	#plt.scatter(kmeans.cluster_centers_[:,0],kmeans.cluster_centers_[:,1],s=100, c='yellow',label='Centroids')
+	plt.legend()
+	plt.show()
+	
+	#Getting n_clusters:
+	wcss =[]
+	for i in range(1,10):
+		kmeans = KMeans(n_clusters = i, init = 'k-means++',max_iter = 300, n_init = 10, random_state = 0)
+		kmeans.fit(data2) 
+		wcss.append(kmeans.inertia_)
+	plt.plot(range(1,10),wcss)
+	plt.show()
+	
+#Method_2:
+	k_means = KMeans(init = "k-means++", n_clusters = 3, n_init = 12)
+	k_means.fit(X)
+	labels = k_means.labels_
+	print(labels)
+	# Gruping and getting mean of all columns:
+	df.groupby('Clus_km').mean()
