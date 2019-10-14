@@ -8,7 +8,8 @@
 6: ROC Curve
 7: GroupBy
 8: Merging/Joining
-9: Model Samples
+9: K-Fold Method.
+10: Model Samples
 
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -88,9 +89,17 @@ t_data.groupby('campaign_id')['coupon_id'].nunique()
 ===========================8. Merging/Joining Tables======================================
 train_data2 = test_data.merge(cam_data,on='campaign_id',how='inner')
 
+===========================9. Using K-Fold Method==========================================
+from sklearn.model_selection import KFold
+cv = KFold(n_splits=10, random_state=0, shuffle=False)
+for train_index, test_index in cv.split(X):
+    X_train, X_test, y_train, y_test = X[train_index], X[test_index], y[train_index], y[test_index]
+    xg.fit(X_train,y_train)
+    score.append(accuracy_score(y_test,xg.predict(X_test)))
+	
+# sample code for k-fold : successive call of fit improves the model.
 
-
-===========================9. Models Syntax================================================
+===========================10. Models Syntax================================================
 1. Logistic_Regression:
 	from sklearn.linear_model import LogisticRegression
 	LR = LogisticRegression(solver='liblinear')
