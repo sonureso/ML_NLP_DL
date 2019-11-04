@@ -3,7 +3,8 @@
 2.1: LabelEncoder
 2.2: StandardScaler
 3: Accuracy
-4: OLS Report
+4: OLS Report OR LOGIT
+4.1: Getting Co-Relation
 5: Train_Test_Split
 6: ROC Curve
 7: GroupBy
@@ -53,6 +54,22 @@ import statsmodels.api as sm
 est = sm.OLS(y, X)
 est2 = est.fit()
 print(est2.summary())
+
+------------------------------------
+import statsmodels.api as sm
+model = sm.Logit(y,X)
+result = model.fit()
+print(result.summary2())
+print(np.exp(result.params))
+
+============================4.1 CoRelation=================================================
+# Simple Corelation with target:
+df_train[[colnm1,colnm2,....]].corr()['target']
+-------------------------------------------------
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.figure(figsize=(16,8))
+sns.heatmap(df.corr(),annot=True)
 
 ============================5. Train_Test_Split============================================
 from sklearn.model_selection import train_test_split
