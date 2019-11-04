@@ -9,7 +9,8 @@
 7: GroupBy
 8: Merging/Joining
 9: K-Fold Method.
-10: Model Samples
+10: Selecting k Best features.
+11: Model Samples
 
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -98,6 +99,21 @@ for train_index, test_index in cv.split(X):
     score.append(accuracy_score(y_test,xg.predict(X_test)))
 	
 # sample code for k-fold : successive call of fit improves the model.
+
+===========================10. Select K Best Features======================================
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+
+bestfeatures = SelectKBest(score_func=chi2, k=124)
+fit = bestfeatures.fit(X,y)
+dfscores = pd.DataFrame(fit.scores_)
+dfcolumns = pd.DataFrame(X.columns)
+#concat two dataframes for better visualization 
+featureScores = pd.concat([dfcolumns,dfscores],axis=1)
+featureScores.columns = ['Specs','Score']  #naming the dataframe columns
+#print(featureScores.nlargest(20,'Score')) 
+best_feat_cols = featureScores.nlargest(124,'Score')['Specs']
+#print(best_feat_cols)
 
 ===========================10. Models Syntax================================================
 1. Logistic_Regression:
