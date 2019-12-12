@@ -12,7 +12,8 @@
 9: K-Fold Method.
 10: Selecting k Best features.
 11: Selecting features on variance basis.
-12: Model Samples
+12: Getting Word Frequescy count from List of words.
+13: Model Samples
 
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -146,7 +147,12 @@ Based on variance: Ref: https://chrisalbon.com/machine_learning/feature_selectio
 	data2 = VarianceThreshold(threshold=2).fit_transform(data[cols])
 	train3 = data2[:train2.shape[0]]; test3 = data2[train2.shape[0]:]
 	
-===========================12. Models Syntax================================================
+===========================12. Getting Word Frequescy count from List of words.=============
+import nltk
+freq = nltk.FreqDist(Word_list)
+freq.plot(20, cumulative=False)
+	
+===========================13. Models Syntax================================================
 1. Logistic_Regression:
 	from sklearn.linear_model import LogisticRegression
 	LR = LogisticRegression(solver='liblinear')
