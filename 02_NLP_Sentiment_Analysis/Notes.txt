@@ -1,0 +1,16 @@
+Visit: https://www.datacamp.com/community/tutorials/stemming-lemmatization-python
+=====================================================================================
+Stemming: Stemming is the process of reducing inflection in words to their root forms such as mapping a group of words to the
+          same stem even if the stem itself is not a valid word in the Language.
+          
+=====================================================================================
+Lemmatization Vs Stemming: 
+  Lemmatization is the process of converting a word to its base form. The difference between stemming and lemmatization is, 
+  lemmatization considers the context and converts the word to its meaningful base form, whereas stemming just removes the last
+  few characters, often leading to incorrect meanings and spelling errors.
+  Ex: 
+    ‘Caring’ -> Lemmatization -> ‘Care’
+    ‘Caring’ -> Stemming -> ‘Car’
+=====================================================================================
+          
+          
