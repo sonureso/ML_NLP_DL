@@ -1,0 +1,2 @@
+1. VGG19: image object/animal in image using keras.
+	LINK: https://drive.google.com/drive/folders/1n6kX_NWM8z4FSs0XWmCiPdgyiqI69a78?usp=sharing
