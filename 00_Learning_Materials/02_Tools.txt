@@ -14,7 +14,8 @@
 11: Selecting features on variance basis.
 12: Getting Word Frequescy count from List of words.
 13: Model Samples
-
+14: Questions:
+	a) What is Entropy and information gain in Decision Tree?
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
 smt = SMOTE(random_state = 0) 
@@ -255,3 +256,13 @@ freq.plot(20, cumulative=False)
 	print(labels)
 	# Gruping and getting mean of all columns:
 	df.groupby('Clus_km').mean()
+==============================================================================================
+=====================14. Questions============================================================
+1. What is Entropy and information gain in Decision Tree?
+Ans: Entropy is nothing but the measure of disorder.(You can think of it as a measure of purity as well.)
+	If all values are same then Entropy is 0 and if values are equally distributed then Entropy is 1.
+	For DataSet Entropy should be one but for a specific cluster or class, Entropy should by 0.
+     Information Gain = Initial Entropy - Summation of Final Entropy for each Class or group.
+     NOTE: Higher the information gain better is the model.
+     
+2. 
