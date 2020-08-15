@@ -50,7 +50,7 @@ def acc(a,b):
     print('Accuracy(test Data): ',accuracy_score(a,b))
     #print('Accuracy(train Data):',accuracy_score(a,b))
     print('Confusion Matrix: \n',pd.DataFrame(confusion_matrix(a,b)))
-    print('Classification Repost:\n',classification_report(a,b))
+    print('Classification Repost:\n',classification_report(a,b,digits=3))
 	
 ============================4. OLS Summary Report==========================================
 import statsmodels.api as sm
