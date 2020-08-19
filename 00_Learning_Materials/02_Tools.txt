@@ -13,8 +13,9 @@
 10: Selecting k Best features.
 11: Selecting features on variance basis.
 12: Getting Word Frequescy count from List of words.
-13: Model Samples
-14: Questions:
+13: Getting Tree PNG File for Decision tree and Random Forset Classifier
+14: Model Samples
+15: Questions:
 	a) What is Entropy and information gain in Decision Tree?
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -152,8 +153,34 @@ Based on variance: Ref: https://chrisalbon.com/machine_learning/feature_selectio
 import nltk
 freq = nltk.FreqDist(Word_list)
 freq.plot(20, cumulative=False)
+
+===========================13. Tree PNG Generation==========================================
+#Generating Tree image for random forest classifier:
+estimator = clf.estimators_[5]
+from sklearn.tree import export_graphviz
+# Export as dot file
+export_graphviz(estimator, out_file='tree.dot', feature_names = X_train.columns,
+                class_names = 'Response',rounded = True, proportion = False, 
+                precision = 2, filled = True)
+# Convert to png using system command (requires Graphviz)
+from subprocess import call
+call(['dot', '-Tpng', 'tree.dot', '-o', 'tree.png', '-Gdpi=600'])
+from IPython.display import Image
+Image(filename = 'tree.png')
+---------------------------------------------------------------------------------------
+#Generating Tree image for decision tree classifier:
+from sklearn.tree import export_graphviz
+# Export as dot file
+export_graphviz(dt, out_file='tree.dot', feature_names = X_train.columns,
+                class_names = 'Response', rounded = True, proportion = False, 
+                precision = 2, filled = True)
+# Convert to png using system command (requires Graphviz)
+from subprocess import call
+call(['dot', '-Tpng', 'tree.dot', '-o', 'tree.png', '-Gdpi=600'])
+from IPython.display import Image
+Image(filename = 'tree.png')
 	
-===========================13. Models Syntax================================================
+===========================14. Models Syntax================================================
 1. Logistic_Regression:
 	from sklearn.linear_model import LogisticRegression
 	LR = LogisticRegression(solver='liblinear')
