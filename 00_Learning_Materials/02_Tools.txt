@@ -14,8 +14,9 @@
 11: Selecting features on variance basis.
 12: Getting Word Frequescy count from List of words.
 13: Getting Tree PNG File for Decision tree and Random Forset Classifier
-14: Model Samples
-15: Questions:
+14: GridSearch for parameter tuning:
+15: Model Samples
+16: Questions:
 	a) What is Entropy and information gain in Decision Tree?
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -180,7 +181,26 @@ call(['dot', '-Tpng', 'tree.dot', '-o', 'tree.png', '-Gdpi=600'])
 from IPython.display import Image
 Image(filename = 'tree.png')
 	
-===========================14. Models Syntax================================================
+===========================14. GridSearch parameter tuning=================================
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
+pipe = Pipeline([('classifier' , ensemble.RandomForestClassifier())])
+
+param_grid = [
+    {'classifier' : [LogisticRegression()],
+     'classifier__penalty' : ['l1', 'l2'],
+    'classifier__C' : np.logspace(-4, 4, 20),
+    'classifier__solver' : ['liblinear']},
+    {'classifier' : [ensemble.RandomForestClassifier()],
+    'classifier__n_estimators' : list(range(10,101,10)),
+    'classifier__max_features' : list(range(6,32,5))}
+]
+
+clf = GridSearchCV(pipe, param_grid = param_grid, cv = 5, verbose=True, n_jobs=-1)
+best_clf = clf.fit(X_train, y_train)
+
+=============================================================================================
+===========================15. Models Syntax================================================
 1. Logistic_Regression:
 	from sklearn.linear_model import LogisticRegression
 	LR = LogisticRegression(solver='liblinear')
