@@ -239,7 +239,7 @@ best_clf = clf.fit(X_train, y_train)
 
 5. SVM_Model:
 	from sklearn import svm
-	clf = svm.SVC(kernel='rbf')
+	clf = svm.SVC(kernel='sigmoid',C=10,gamma=0.3)
 	clf.fit(X_train, y_train)
 	print('Accuracy:',accuracy_score(y_test,clf.predict(X_test)))
 
