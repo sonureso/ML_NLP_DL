@@ -16,7 +16,8 @@
 13: Getting Tree PNG File for Decision tree and Random Forset Classifier
 14: GridSearch for parameter tuning:
 15: Model Samples
-16: Questions:
+16: Pandas Profile Report.
+17: Questions:
 	a) What is Entropy and information gain in Decision Tree?
 ============================1. SMOTE Method================================================
 from imblearn.over_sampling import SMOTE
@@ -304,7 +305,16 @@ best_clf = clf.fit(X_train, y_train)
 	# Gruping and getting mean of all columns:
 	df.groupby('Clus_km').mean()
 ==============================================================================================
-=====================14. Questions============================================================
+===================16. Pandas ProfileReport====================================================
+import pandas as pd
+from pandas_profiling import ProfileReport
+
+profile = ProfileReport(df, title = 'Data_Profiling_Claims')
+profile.to_file('Data_Profiling_Claims.html')
+
+
+
+=====================17. Questions============================================================
 1. What is Entropy and information gain in Decision Tree?
 Ans: Entropy is nothing but the measure of disorder.(You can think of it as a measure of purity as well.)
 	If all values are same then Entropy is 0 and if values are equally distributed then Entropy is 1.
