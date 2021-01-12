@@ -17,6 +17,7 @@
 14: GridSearch for parameter tuning:
 15: Model Samples
 16: Pandas Profile Report.
+17: Print Feature Importance.
 17: Questions:
 	a) What is Entropy and information gain in Decision Tree?
 ============================1. SMOTE Method================================================
@@ -312,9 +313,12 @@ from pandas_profiling import ProfileReport
 profile = ProfileReport(df, title = 'Data_Profiling_Claims')
 profile.to_file('Data_Profiling_Claims.html')
 
+====================17. Feature Importance===================================================
+importances=pd.Series(model.feature_importances_, index=X.columns)
+importances.plot(kind='barh', figsize=(12,8))
+---------------------------------------------------------------------------
 
-
-=====================17. Questions============================================================
+=====================18. Questions============================================================
 1. What is Entropy and information gain in Decision Tree?
 Ans: Entropy is nothing but the measure of disorder.(You can think of it as a measure of purity as well.)
 	If all values are same then Entropy is 0 and if values are equally distributed then Entropy is 1.
